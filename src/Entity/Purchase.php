@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PurchaseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,47 +22,23 @@ class Purchase
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $customer;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $book;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $purchaseDate;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Customer::class, mappedBy="purchases", orphanRemoval=true)
+     */
+    private $customer;
+
+    public function __construct()
+    {
+        $this->customer = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCustomer(): ?int
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(int $customer): self
-    {
-        $this->customer = $customer;
-
-        return $this;
-    }
-
-    public function getBook(): ?int
-    {
-        return $this->book;
-    }
-
-    public function setBook(int $book): self
-    {
-        $this->book = $book;
-
-        return $this;
     }
 
     public function getPurchaseDate(): ?\DateTimeInterface
@@ -71,6 +49,36 @@ class Purchase
     public function setPurchaseDate(\DateTimeInterface $purchaseDate): self
     {
         $this->purchaseDate = $purchaseDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Customer[]
+     */
+    public function getCustomer(): Collection
+    {
+        return $this->customer;
+    }
+
+    public function addCustomer(Customer $customer): self
+    {
+        if (!$this->customer->contains($customer)) {
+            $this->customer[] = $customer;
+            $customer->setPurchases($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(Customer $customer): self
+    {
+        if ($this->customer->removeElement($customer)) {
+            // set the owning side to null (unless already changed)
+            if ($customer->getPurchases() === $this) {
+                $customer->setPurchases(null);
+            }
+        }
 
         return $this;
     }

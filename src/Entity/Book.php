@@ -25,7 +25,8 @@ class Book
     private $isbn;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=author::class, inversedBy="books")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
@@ -61,12 +62,12 @@ class Book
         return $this;
     }
 
-    public function getAuthor(): ?int
+    public function getAuthor(): ?author
     {
         return $this->author;
     }
 
-    public function setAuthor(int $author): self
+    public function setAuthor(?author $author): self
     {
         $this->author = $author;
 

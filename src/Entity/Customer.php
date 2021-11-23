@@ -30,7 +30,8 @@ class Customer
     private $lastName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=purchase::class, inversedBy="customer")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $purchases;
 
@@ -63,12 +64,12 @@ class Customer
         return $this;
     }
 
-    public function getPurchases(): ?int
+    public function getPurchases(): ?purchase
     {
         return $this->purchases;
     }
 
-    public function setPurchases(int $purchases): self
+    public function setPurchases(?purchase $purchases): self
     {
         $this->purchases = $purchases;
 
