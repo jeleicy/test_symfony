@@ -21,17 +21,16 @@ class BookControllersController extends AbstractController
         $authors = $this->getAuthorsBooks();
         $books = $this->getBooksBooks();
         $customers = $this->getCustomersBooks();
-        $purchases = $this->getPurchasesBooks();
-
-        //dd($authors);
+        $purchasess = $this->getPurchasesBooks();
 
         return $this->render('books/index.html.twig', [
             'controller_name' => 'BookController',
             'authors'=>$authors,
             'books'=>$books,
             'customers'=>$customers,
-            'purchases'=>$purchases,
+            'purchases'=>$purchasess,
         ]);
+        
         /*
         return $this->render('books/index.html.twig', [
             'controller_name' => 'BookControllers...Controller',

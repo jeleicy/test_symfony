@@ -32,7 +32,7 @@ class Author
     private $lastName;
 
     /**
-     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="author")
      */
     private $books;
 
